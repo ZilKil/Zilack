@@ -1,0 +1,24 @@
+{
+    "name": "zilkil/zilack",
+    "description": "Slack bot client written in PHP",
+    "homepage": "https://github.com/ZilKil/Zilack",
+    "require": {
+        "guzzlehttp/guzzle": "dev-master",
+        "symfony/yaml": "v3.0.3",
+        "zendframework/zend-log": "2.7.1",
+        "devristo/phpws": "dev-master",
+        "react/http": "dev-master",
+        "symfony/event-dispatcher": "v3.0.3"
+    },
+    "authors": [
+        {
+            "name": "zilkil",
+            "email": "zilvinas.kilius@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Zilack\\": "src"
+        }
+    }
+}
