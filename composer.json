@@ -3,7 +3,7 @@
     "description": "Slack bot client written in PHP",
     "homepage": "https://github.com/ZilKil/Zilack",
     "require": {
-        "guzzlehttp/guzzle": "dev-master",
+        "guzzlehttp/guzzle": "6.1.1",
         "symfony/yaml": "v3.0.3",
         "zendframework/zend-log": "2.7.1",
         "devristo/phpws": "dev-master",
