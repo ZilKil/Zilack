@@ -45,6 +45,15 @@ class ZilackBot
         $this->configuration = $configuration;
     }
 
+    public function addListener($event, $listener, $action)
+    {
+        if($listener instanceof CommandListener || $listener instanceof WebhookListener){
+            $this->dispatcher->addListener($event, [$listener, $action]);
+        } else {
+            throw new \Exception('Listener has to extend CommandListener or WebhookListener class.');
+        }
+    }
+
     private function boot()
     {
         $this->loadInternalListeners();
