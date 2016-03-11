@@ -10,13 +10,14 @@ class SlackClient extends Client
     /** @var  ConfigManager $configManager */
     private $configManager;
 
-    public function sendResponseAs($channel, $message, $username, $icon = null)
+    public function sendResponseAs($channel, $message, $username, $icon = null, array $attachments = [])
     {
         $params = [
             'id' => time(),
             'token' => $this->token,
             'channel' => $channel,
-            'text' => $message
+            'text' => $message,
+            'attachments' => json_encode($attachments)
         ];
 
         if(!is_null($username)) {
@@ -31,13 +32,14 @@ class SlackClient extends Client
         $this->request('POST', $this->buildSlackUri($params, 'https://slack.com/api/chat.postMessage'));
     }
 
-    public function sendResponse($channel, $message, $user = null)
+    public function sendResponse($channel, $message, $user = null, array $attachments = [])
     {
         $params = [
             'id' => time(),
             'token' => $this->token,
             'channel' => $channel,
-            'text' => !is_null($user) ? "<@{$user}>: {$message}" : $message
+            'text' => !is_null($user) ? "<@{$user}>: {$message}" : $message,
+            'attachments' => json_encode($attachments)
         ];
 
         $this->request('POST', $this->buildSlackUri($params, 'https://slack.com/api/chat.postMessage'));
