@@ -2,6 +2,7 @@
 
 namespace Zilack;
 
+use React\Http\Request;
 use Zilack\Services\SlackClient;
 
 abstract class ZilackWebhook
@@ -13,7 +14,7 @@ abstract class ZilackWebhook
     private $event;
 
     abstract public function configure();
-    abstract public function execute($message, $context);
+    abstract public function execute(Request $request, $context);
 
     public function setClient($client)
     {

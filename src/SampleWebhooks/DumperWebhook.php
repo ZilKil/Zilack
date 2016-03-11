@@ -1,6 +1,7 @@
 <?php
 namespace Zilack\SampleWebhooks;
 
+use React\Http\Request;
 use Zilack\ZilackWebhook;
 
 class DumperWebhook extends ZilackWebhook
@@ -13,20 +14,22 @@ class DumperWebhook extends ZilackWebhook
         $this->setEvent('webhook.received');
     }
 
-    public function execute($message, $context)
+    public function execute(Request $request, $context)
     {
         $identity = $this->getIdentity();
 
         $this->getClient()->sendResponseAs(
             $this->getChannel(),
-            $this->generateMessage($message),
+            $this->generateMessage($request),
             isset($identity['name']) ? $identity['name'] : null,
             isset($identity['icon']) ? $identity['icon'] : null
         );
     }
 
-    private function generateMessage($message)
+    private function generateMessage(Request $request)
     {
-        return sprintf("I just received a webhook. Here's the content: `%s`", json_encode($message));
+        $data = $request->getPost();
+        $data = is_null($data) ? $request->getBody() : $data;
+        return sprintf("I just received a webhook. Here's the content: `%s`", json_encode($data));
     }
 }

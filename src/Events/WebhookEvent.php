@@ -1,6 +1,7 @@
 <?php
 namespace Zilack\Events;
 
+use React\Http\Request;
 use Symfony\Component\EventDispatcher\Event;
 use Zilack\ZilackCommand;
 use Zilack\ZilackWebhook;
@@ -9,18 +10,9 @@ class WebhookEvent extends Event
 {
     /** @var  ZilackWebhook $webhook */
     private $webhook;
-    private $data;
     private $context;
-
-    /**
-     * @param mixed $data
-     * @return CommandEvent
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-        return $this;
-    }
+    /** @var  Request $request */
+    private $request;
 
     /**
      * @return mixed
@@ -39,14 +31,6 @@ class WebhookEvent extends Event
     }
 
     /**
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
      * @return ZilackWebhook
      */
     public function getWebhook()
@@ -60,5 +44,21 @@ class WebhookEvent extends Event
     public function setWebhook($webhook)
     {
         $this->webhook = $webhook;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
     }
 }

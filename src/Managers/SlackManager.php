@@ -188,11 +188,9 @@ class SlackManager
         $this->http = new \React\Http\Server($this->socket);
 
         $this->http->on('request', function (Request $request, Response $response) {
-            if(!empty($request->getPost() || !empty($request->getBody()))) {
+            if(!empty($request->getPost()) || !empty($request->getBody())) {
                 $webhookEvent = new WebhookEvent();
-                $data = $request->getPost();
-                $data = empty($data) ? $request->getBody() : $data;
-                $webhookEvent->setData($data);
+                $webhookEvent->setRequest($request);
                 $this->dispatcher->dispatch('webhook.received', $webhookEvent);
 
                 $this->dispatchCustomWebhookEvents($webhookEvent);

@@ -10,8 +10,8 @@ class WebhookListener
         $webhook = $event->getWebhook();
 
         if(!is_null($webhook)) {
-            $data = $event->getData();
-            $webhook->execute($data, $event->getContext());
+            $request = $event->getRequest();
+            $webhook->execute($request, $event->getContext());
         }
     }
 }
