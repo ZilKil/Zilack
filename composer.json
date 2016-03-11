@@ -13,7 +13,7 @@
         "symfony/yaml": "v3.0.3",
         "zendframework/zend-log": "2.7.1",
         "devristo/phpws": "dev-master",
-        "react/http": "v0.4.1",
+        "react/http": "dev-master",
         "symfony/event-dispatcher": "v3.0.3"
     },
     "authors": [
