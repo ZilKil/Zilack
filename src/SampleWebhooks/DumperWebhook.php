@@ -29,7 +29,7 @@ class DumperWebhook extends ZilackWebhook
     private function generateMessage(Request $request)
     {
         $data = $request->getPost();
-        $data = is_null($data) ? $request->getBody() : $data;
+        $data = empty($data) ? $request->getBody() : $data;
         return sprintf("I just received a webhook. Here's the content: `%s`", json_encode($data));
     }
 }
