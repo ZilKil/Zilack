@@ -2,11 +2,17 @@
     "name": "zilkil/zilack",
     "description": "Slack bot client written in PHP",
     "homepage": "https://github.com/ZilKil/Zilack",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Devristo/phpws"
+        }
+    ],
     "require": {
         "guzzlehttp/guzzle": "6.1.1",
         "symfony/yaml": "v3.0.3",
         "zendframework/zend-log": "2.7.1",
-        "devristo/phpws": "@dev",
+        "devristo/phpws": "dev-master",
         "react/http": "v0.4.1",
         "symfony/event-dispatcher": "v3.0.3"
     },
