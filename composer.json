@@ -22,6 +22,7 @@
             "email": "zilvinas.kilius@gmail.com"
         }
     ],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Zilack\\": "src"
