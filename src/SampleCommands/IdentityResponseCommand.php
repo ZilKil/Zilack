@@ -19,7 +19,8 @@ class IdentityResponseCommand extends ZilackCommand
             $this->getChannel(),
             $this->generateMessage($message),
             isset($identity['name']) ? $identity['name'] : null,
-            isset($identity['icon']) ? $identity['icon'] : null
+            isset($identity['icon']) ? $identity['icon'] : null,
+            isset($identity['emoji']) ? $identity['emoji'] : null
         );
     }
 

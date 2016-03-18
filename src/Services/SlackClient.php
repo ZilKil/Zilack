@@ -10,7 +10,7 @@ class SlackClient extends Client
     /** @var  ConfigManager $configManager */
     private $configManager;
 
-    public function sendResponseAs($channel, $message, $username, $icon = null, array $attachments = [])
+    public function sendResponseAs($channel, $message, $username, $icon = null, $emoji = null, array $attachments = [])
     {
         $params = [
             'id' => time(),
@@ -26,7 +26,10 @@ class SlackClient extends Client
         }
 
         if(!is_null($icon)) {
-            $params['icon_emoji'] = ":{$icon}:";
+            $params['icon_url'] = $icon;
+        }
+        elseif(!is_null($emoji)) {
+            $params['icon_emoji'] = ":{$emoji}:";
         }
 
         $this->request('POST', $this->buildSlackUri($params, 'https://slack.com/api/chat.postMessage'));

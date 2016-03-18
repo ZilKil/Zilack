@@ -16,6 +16,7 @@ class ExtendedResponseCommand extends ZilackCommand
             $this->getChannel(),
             $this->generateMessage($message),
             'Zilack The Great',
+            null,
             'robot_face'
         );
     }

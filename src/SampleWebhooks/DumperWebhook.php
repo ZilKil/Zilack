@@ -22,7 +22,8 @@ class DumperWebhook extends ZilackWebhook
             $this->getChannel(),
             $this->generateMessage($request),
             isset($identity['name']) ? $identity['name'] : null,
-            isset($identity['icon']) ? $identity['icon'] : null
+            isset($identity['icon']) ? $identity['icon'] : null,
+            isset($identity['emoji']) ? $identity['emoji'] : null
         );
     }
 
