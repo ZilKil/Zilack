@@ -3,12 +3,11 @@ namespace Zilack\Services;
 
 use GuzzleHttp\Client;
 use Zilack\Managers\ConfigManager;
+use Zilack\ZilackRegistry;
 
 class SlackClient extends Client
 {
     private $token;
-    /** @var  ConfigManager $configManager */
-    private $configManager;
 
     public function sendResponseAs($channel, $message, $username, $icon = null, $emoji = null, array $attachments = [])
     {
@@ -58,13 +57,11 @@ class SlackClient extends Client
         return $uri . "?" . http_build_query($params);
     }
 
-    public function setConfigManager($configManager)
-    {
-        $this->configManager = $configManager;
-    }
-
+    /**
+     * @return ConfigManager
+     */
     public function getConfigManager()
     {
-        return $this->configManager;
+        return ZilackRegistry::get('configManager');
     }
 }

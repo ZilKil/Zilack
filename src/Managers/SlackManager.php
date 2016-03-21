@@ -15,6 +15,7 @@ use Zilack\Events\CommandEvent;
 use Zilack\Events\WebhookEvent;
 use Zilack\Services\SlackClient;
 use Zilack\ZilackCommand;
+use Zilack\ZilackRegistry;
 use Zilack\ZilackWebhook;
 
 class SlackManager
@@ -42,17 +43,17 @@ class SlackManager
     private $socketHost;
     private $socketPort;
     private $http;
+    /** @var EventDispatcher */
+    private $dispatcher;
 
-    public function __construct($configurationPath, EventDispatcher $dispatcher)
+    public function __construct()
     {
-        $this->configManager = new ConfigManager();
-        $this->configManager->setConfig($configurationPath);
+        $this->dispatcher = ZilackRegistry::get('dispatcher');
+        $this->configManager = ZilackRegistry::get('configManager');
         $this->logger = new Logger();
         $this->loop = Factory::create();
         $this->slackSettings = $this->configManager->getConfigParam('slack_settings');
         $this->slackClient = new SlackClient();
-        $this->slackClient->setConfigManager($this->configManager);
-        $this->dispatcher = $dispatcher;
     }
 
     public function init($commands, $webhooks)
@@ -191,9 +192,8 @@ class SlackManager
             if(!empty($request->getPost()) || !empty($request->getBody())) {
                 $webhookEvent = new WebhookEvent();
                 $webhookEvent->setRequest($request);
-                $this->dispatcher->dispatch('webhook.received', $webhookEvent);
 
-                $this->dispatchCustomWebhookEvents($webhookEvent);
+                $this->dispatchWebhookEvents($webhookEvent);
 
                 $response->writeHead(200, array('Content-Type' => 'text/plain'));
                 $response->end("Success");
@@ -204,7 +204,7 @@ class SlackManager
         });
     }
 
-    private function dispatchCustomWebhookEvents(WebhookEvent $webhookEvent)
+    private function dispatchWebhookEvents(WebhookEvent $webhookEvent)
     {
         foreach($this->webhooks as $webhook) {
             $event = $webhook->getEvent();

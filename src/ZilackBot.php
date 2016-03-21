@@ -4,6 +4,7 @@ namespace Zilack;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zilack\Listeners\CommandListener;
 use Zilack\Listeners\WebhookListener;
+use Zilack\Managers\ConfigManager;
 use Zilack\Managers\SlackManager;
 
 class ZilackBot
@@ -13,16 +14,19 @@ class ZilackBot
     /** @var  ZilackWebhook[] $webhooks */
     private $webhooks;
     private $configuration;
+    /** @var  EventDispatcher */
+    private $dispatcher;
 
     public function __construct()
     {
-        $this->dispatcher = new EventDispatcher();
+        $this->initRegistry();
+        $this->dispatcher = ZilackRegistry::get('dispatcher');
         $this->boot();
     }
 
     public function run()
     {
-        $slack = new SlackManager($this->configuration, $this->dispatcher);
+        $slack = new SlackManager();
         $slack->init($this->commands, $this->webhooks);
         $slack->openConnection();
     }
@@ -62,6 +66,14 @@ class ZilackBot
     private function loadInternalListeners()
     {
         $this->dispatcher->addListener('command.received', [new CommandListener(), 'onCommandReceived']);
-        $this->dispatcher->addListener('webhook.received', [new WebhookListener(), 'onWebhookReceived']);
+    }
+
+    private function initRegistry()
+    {
+        $configManager = new ConfigManager();
+        $configManager->setConfig($this->configuration);
+
+        ZilackRegistry::add($configManager, 'configManager');
+        ZilackRegistry::add(new EventDispatcher(), 'dispatcher');
     }
 }
