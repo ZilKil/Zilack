@@ -46,7 +46,7 @@ class ZilackBot
 
     public function setConfiguration($configuration)
     {
-        $this->configuration = $configuration;
+        ZilackRegistry::get('configManager')->setConfig($configuration);
     }
 
     public function addListener($event, $listener, $action)
@@ -70,10 +70,7 @@ class ZilackBot
 
     private function initRegistry()
     {
-        $configManager = new ConfigManager();
-        $configManager->setConfig($this->configuration);
-
-        ZilackRegistry::add($configManager, 'configManager');
+        ZilackRegistry::add(new ConfigManager(), 'configManager');
         ZilackRegistry::add(new EventDispatcher(), 'dispatcher');
     }
 }
