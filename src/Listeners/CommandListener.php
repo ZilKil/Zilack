@@ -11,6 +11,6 @@ class CommandListener
         $data = $event->getData();
         $command->setChannel($data->channel);
         $command->setUser($data->user);
-        $command->execute($data, $event->getContext());
+        $command->execute($data, $event->getContext(), $event->getCommandName());
     }
 }
