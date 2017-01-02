@@ -10,6 +10,23 @@ class CommandEvent extends Event
     private $command;
     private $data;
     private $context;
+    private $commandName;
+
+    /**
+     * CommandEvent constructor.
+     *
+     * @param $command
+     * @param $data
+     * @param $context
+     * @param $commandName
+     */
+    public function __construct($command, $data, $context, $commandName)
+    {
+        $this->command = $command;
+        $this->data = $data;
+        $this->context = $context;
+        $this->commandName = $commandName;
+    }
 
     /**
      * @return ZilackCommand
@@ -17,24 +34,6 @@ class CommandEvent extends Event
     public function getCommand()
     {
         return $this->command;
-    }
-
-    /**
-     * @param ZilackCommand $command
-     */
-    public function setCommand($command)
-    {
-        $this->command = $command;
-    }
-
-    /**
-     * @param mixed $data
-     * @return CommandEvent
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-        return $this;
     }
 
     /**
@@ -46,18 +45,18 @@ class CommandEvent extends Event
     }
 
     /**
-     * @param mixed $context
-     */
-    public function setContext($context)
-    {
-        $this->context = $context;
-    }
-
-    /**
      * @return mixed
      */
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommandName()
+    {
+        return $this->commandName;
     }
 }

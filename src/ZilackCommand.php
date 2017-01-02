@@ -6,15 +6,21 @@ use Zilack\Services\SlackClient;
 
 abstract class ZilackCommand
 {
+    /**
+     * @var string|array
+     */
     private $name;
-    /** @var  SlackClient */
+    /**
+     * @var SlackClient
+     */
     private $client;
     private $channel;
     private $user;
     private $identity;
 
     abstract public function configure();
-    abstract public function execute($message, $context);
+
+    abstract public function execute($message, $context, $commandName);
 
     public function setName($name)
     {
