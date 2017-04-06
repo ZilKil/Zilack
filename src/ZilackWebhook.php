@@ -14,7 +14,7 @@ abstract class ZilackWebhook
     private $event;
 
     abstract public function configure();
-    abstract public function execute(Request $request, $context);
+    abstract public function execute(array $payload, $context);
 
     public function setClient($client)
     {

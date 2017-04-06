@@ -73,7 +73,7 @@ class HelloCommand extends ZilackCommand
         $this->setName('!hello');
     }
 
-    public function execute($message, $context)
+    public function execute($message, $context, $commandName)
     {
         $this->getClient()->sendResponse($this->getChannel(), 'Hello there!');
     }

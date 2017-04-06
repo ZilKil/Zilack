@@ -10,7 +10,7 @@ class PrivateResponseCommand extends ZilackCommand
         $this->setName('!response:private');
     }
 
-    public function execute($message, $context)
+    public function execute($message, $context, $commandName)
     {
         $this->getClient()->sendResponse(
             $this->getUser(),

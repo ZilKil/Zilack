@@ -11,7 +11,7 @@ class IdentityResponseCommand extends ZilackCommand
         $this->setIdentity('primary');
     }
 
-    public function execute($message, $context)
+    public function execute($message, $context, $commandName)
     {
         $identity = $this->getIdentity();
 

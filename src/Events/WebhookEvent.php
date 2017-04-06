@@ -11,8 +11,11 @@ class WebhookEvent extends Event
     /** @var  ZilackWebhook $webhook */
     private $webhook;
     private $context;
-    /** @var  Request $request */
-    private $request;
+
+    /**
+     * @var array
+     */
+    private $payload;
 
     /**
      * @return mixed
@@ -47,18 +50,22 @@ class WebhookEvent extends Event
     }
 
     /**
-     * @return Request
+     * @return array
      */
-    public function getRequest()
+    public function getPayload()
     {
-        return $this->request;
+        return $this->payload;
     }
 
     /**
-     * @param Request $request
+     * @param array $payload
+     *
+     * @return WebhookEvent
      */
-    public function setRequest($request)
+    public function setPayload($payload)
     {
-        $this->request = $request;
+        $this->payload = $payload;
+
+        return $this;
     }
 }

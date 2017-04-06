@@ -10,7 +10,7 @@ class RegularResponseCommand extends ZilackCommand
         $this->setName('!response:regular');
     }
 
-    public function execute($message, $context)
+    public function execute($message, $context, $commandName)
     {
         $this->getClient()->sendResponse(
             $this->getChannel(),

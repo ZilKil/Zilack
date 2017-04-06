@@ -7,7 +7,9 @@ use Devristo\Phpws\Messaging\MessageInterface;
 use GuzzleHttp\Client;
 use React\EventLoop\Factory;
 use React\Http\Request;
+use React\Http\RequestHeaderParser;
 use React\Http\Response;
+use React\Socket\ConnectionInterface;
 use React\Socket\Server;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zend\Log\Logger;
@@ -209,23 +211,54 @@ class SlackManager
         $this->socket = new Server($this->loop);
         $this->http = new \React\Http\Server($this->socket);
 
+        $this->socket->on(
+            'connection',
+            function (ConnectionInterface $conn) {
+                $parser = new RequestHeaderParser();
+                $parser->on(
+                    'headers',
+                    function (Request $request, $bodyBuffer) use ($conn) {
+                        $response = new Response($conn);
+                        $response->writeHead(500, ['Content-Type' => 'text/plain']);
+                        $response->end("No content found in request.");
+                    }
+                );
+
+                $listener = [$parser, 'feed'];
+                $conn->on('data', $listener);
+            }
+        );
+
         $this->http->on(
             'request',
             function (Request $request, Response $response) {
-                if (!empty($request->getPost()) || !empty($request->getBody())) {
-                    $webhookEvent = new WebhookEvent();
-                    $webhookEvent->setRequest($request);
+                if ($request->getMethod() === 'POST') {
+                    $request->on(
+                        'data',
+                        function ($data) use ($request, $response) {
+                            try {
+                                $data = json_decode($data, true);
+                            } catch (\Exception $e) {
+                                $data = null;
+                            }
+                            if (null === $data) {
+                                $response->writeHead(500, ['Content-Type' => 'text/plain']);
+                                $response->end("No content found in request.");
+                            }
 
-                    $this->dispatchWebhookEvents($webhookEvent);
+                            $webhookEvent = new WebhookEvent();
+                            $webhookEvent->setPayload($data);
 
-                    $response->writeHead(200, ['Content-Type' => 'text/plain']);
-                    $response->end("Success");
-                } else {
-                    $response->writeHead(500, ['Content-Type' => 'text/plain']);
-                    $response->end("No content found in request.");
+                            $this->dispatchWebhookEvents($webhookEvent);
+
+                            $response->writeHead(200, ['Content-Type' => 'text/plain']);
+                            $response->end("Success");
+                        }
+                    );
                 }
             }
         );
+
     }
 
     private function dispatchWebhookEvents(WebhookEvent $webhookEvent)

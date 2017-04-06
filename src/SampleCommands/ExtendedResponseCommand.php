@@ -10,7 +10,7 @@ class ExtendedResponseCommand extends ZilackCommand
         $this->setName('!response:extended');
     }
 
-    public function execute($message, $context)
+    public function execute($message, $context,  $commandName)
     {
         $this->getClient()->sendResponseAs(
             $this->getChannel(),
