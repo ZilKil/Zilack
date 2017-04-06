@@ -31,13 +31,27 @@ class ZilackBot
         $slack->openConnection();
     }
 
+    /**
+     * @param array $component
+     */
     public function register($component)
     {
-        if($component instanceof ZilackCommand) {
+        $items = is_array($component) ? $component : func_get_args();
+
+        foreach ($items as $item) {
+            $this->registerComponent($item);
+        }
+    }
+
+    private function registerComponent($component)
+    {
+        if ($component instanceof ZilackCommand) {
             $this->commands[] = $component;
+
             return $this;
-        } elseif($component instanceof ZilackWebhook) {
+        } elseif ($component instanceof ZilackWebhook) {
             $this->webhooks[] = $component;
+
             return $this;
         } else {
             throw new \Exception('Component has to extend ZilackCommand or ZilackWebhook class.');
@@ -51,7 +65,7 @@ class ZilackBot
 
     public function addListener($event, $listener, $action)
     {
-        if($listener instanceof CommandListener || $listener instanceof WebhookListener){
+        if ($listener instanceof CommandListener || $listener instanceof WebhookListener) {
             $this->dispatcher->addListener($event, [$listener, $action]);
         } else {
             throw new \Exception('Listener has to extend CommandListener or WebhookListener class.');
