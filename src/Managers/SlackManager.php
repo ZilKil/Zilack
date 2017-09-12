@@ -219,7 +219,7 @@ class SlackManager
                     'headers',
                     function (Request $request, $bodyBuffer) use ($conn) {
                         $response = new Response($conn);
-                        $response->writeHead(500, ['Content-Type' => 'text/plain']);
+                        $response->writeHead(405, ['Content-Type' => 'text/plain']);
                         $response->end("No content found in request.");
                     }
                 );
